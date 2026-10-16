@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Stream ThomKhali — Dashboard de Stream</title>
+<meta name="description" content="Dashboard completo para gerenciar sua live: viewers, chat, eventos, metas e analytics em tempo real." />
+<meta name="theme-color" content="#9146ff" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="ThomKhali" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icons/icon.svg" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%239146FF'/><path d='M30 22 L68 50 L30 78 Z' fill='white'/></svg>" />
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-logo">▶</div>
+      <div class="brand-text"><strong>Stream</strong> ThomKhali<span class="live-dot"></span></div>
+      <button class="icon-btn sidebar-close" id="sidebarClose" aria-label="Fechar menu">✕</button>
+    </div>
+    <div class="streamer-card">
+      <div class="avatar">TK</div>
+      <div class="streamer-info">
+        <strong>ThomKhali</strong>
+        <span class="partner">✔ Parceiro</span>
+      </div>
+      <span class="live-badge pulse" id="sidebarLiveBadge">AO VIVO</span>
+    </div>
+    <nav class="nav">
+      <button class="nav-item active" data-tab="overview">◉ Visão geral</button>
+      <button class="nav-item" data-tab="go">📡 Transmitir</button>
+      <button class="nav-item" data-tab="analytics">▦ Analytics</button>
+      <button class="nav-item" data-tab="chat">💬 Chat <span class="nav-count" id="navChatCount">3</span></button>
+      <button class="nav-item" data-tab="content">🎬 Conteúdo</button>
+      <button class="nav-item" data-tab="settings">⚙ Configurações</button>
+    </nav>
+    <div class="side-goals">
+      <p class="side-title">METAS DO MÊS</p>
+      <div class="goal">
+        <div class="goal-head"><span>Seguidores</span><span id="goalFollowersLabel">8.432 / 10.000</span></div>
+        <div class="bar"><i id="goalFollowersBar" style="width:84%"></i></div>
+      </div>
+      <div class="goal">
+        <div class="goal-head"><span>Subs</span><span id="goalSubsLabel">612 / 800</span></div>
+        <div class="bar alt"><i id="goalSubsBar" style="width:76%"></i></div>
+      </div>
+    </div>
+    <div class="side-footer">
+      <button class="btn primary block" id="quickActionBtn">＋ Ação rápida</button>
+      <p class="hint">Pressione <kbd>G</kbd> para ir live / encerrar</p>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+      <div class="search">
+        <span>🔍</span>
+        <input id="searchInput" type="text" placeholder="Buscar comandos, clipes, moderadores…  ( /mod, /ban, /shoutout )" />
+      </div>
+      <div class="top-actions">
+        <div class="uptime-chip" id="uptimeChip" title="Tempo de live"><span class="rec"></span><span id="uptimeLabel">02:14:36</span></div>
+        <button class="btn ghost" id="clipTopBtn">✂ Criar clipe</button>
+        <button class="btn danger" id="liveToggleTop">⏹ Encerrar</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- STREAM INFO BANNER -->
+      <section class="stream-banner card">
+        <div class="banner-left">
+          <h1 id="streamTitle">🔴 Jogando RANKED com viewers + sorteio de gift subs!</h1>
+          <p class="stream-meta">
+            <span class="pill cat" id="categoryPill">Valorant</span>
+            <span class="pill">Português</span>
+            <span class="pill">Ranked</span>
+            <span class="pill">+18</span>
+            <span class="viewers-inline">👁 <strong id="bannerViewers">4.218</strong> espectadores</span>
+          </p>
+        </div>
+        <div class="banner-right">
+          <div class="health">
+            <span class="health-dot ok" id="healthDot"></span>
+            <div><strong id="healthLabel">Excelente</strong><small id="healthSub">1080p60 · 8.000 kbps · 0.4% drop</small></div>
+          </div>
+          <button class="btn primary" id="editStreamBtn">✎ Editar infos</button>
+        </div>
+      </section>
+
+      <!-- STATS -->
+      <section class="stats">
+        <div class="stat card">
+          <div class="stat-top"><span>👁 Espectadores</span><em class="up" id="viewersDelta">+2,4%</em></div>
+          <strong id="statViewers">4.218</strong>
+          <small>pico de <b id="statPeak">5.102</b> hoje</small>
+        </div>
+        <div class="stat card">
+          <div class="stat-top"><span>➕ Novos seguidores</span><em class="up">+18 hoje</em></div>
+          <strong id="statFollowers">8.432</strong>
+          <small>meta mensal 84%</small>
+        </div>
+        <div class="stat card">
+          <div class="stat-top"><span>★ Subs ativos</span><em class="up">+6 hoje</em></div>
+          <strong id="statSubs">612</strong>
+          <small><b id="statGiftSubs">24</b> gift subs na live</small>
+        </div>
+        <div class="stat card">
+          <div class="stat-top"><span>💎 Bits & Donates</span><em class="up">+R$ 132</em></div>
+          <strong id="statRevenue">R$ 486,20</strong>
+          <small>esta live · 47 doações</small>
+        </div>
+        <div class="stat card">
+          <div class="stat-top"><span>💬 Msg no chat</span><em class="neutral" id="chatRate">12/min</em></div>
+          <strong id="statMessages">3.914</strong>
+          <small><b id="statMods">5</b> mods online</small>
+        </div>
+      </section>
+
+      <!-- TABS -->
+      <div id="tab-overview" class="tab active">
+        <!-- DOWNLOAD ANDROID -->
+        <section class="card download-hero">
+          <div class="dl-main">
+            <div class="dl-icon">🤖</div>
+            <div class="dl-info">
+              <h2>📱 App Stream ThomKhali para Android</h2>
+              <p>Assista às lives, receba alertas de quando entrar ao vivo, participe do chat e baixe os clipes direto no celular.</p>
+              <p class="stream-meta">
+                <span class="pill cat">v2.4.0 • estável</span>
+                <span class="pill">28,4 MB</span>
+                <span class="pill">Android 8.0+</span>
+                <span class="pill">⬇ <strong id="dlCount">12.847</strong> downloads</span>
+              </p>
+              <div class="dl-actions">
+                <a class="btn primary" id="dlApkBtn" href="downloads/stream-thomkhali-v2.4.0.apk" download>⬇ Baixar APK (v2.4.0)</a>
+                <button class="btn" id="installAppBtn">📲 Instalar app</button>
+                <button class="btn" id="dlPlayBtn">▶ Google Play</button>
+                <button class="btn ghost" id="dlVersionsBtn">📋 Versões anteriores</button>
+              </div>
+              <div class="dl-progress hidden" id="dlProgress"><i id="dlProgressBar"></i><span id="dlProgressLabel">0%</span></div>
+            </div>
+          </div>
+          <div class="dl-index" id="dlIndex">
+            <h3>Índice de downloads</h3>
+            <table>
+              <thead><tr><th>Versão</th><th>Tamanho</th><th>Android</th><th>Data</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><strong>v2.4.0</strong> <span class="pill live">atual</span></td><td>28,4 MB</td><td>8.0+</td><td>10/10/2026</td><td><a class="mini dl-link" href="downloads/stream-thomkhali-v2.4.0.apk" download data-ver="v2.4.0">⬇ APK</a></td></tr>
+                <tr><td>v2.3.1</td><td>27,1 MB</td><td>8.0+</td><td>22/09/2026</td><td><a class="mini dl-link" href="downloads/stream-thomkhali-v2.3.1.apk" download data-ver="v2.3.1">⬇ APK</a></td></tr>
+                <tr><td>v2.3.0</td><td>26,8 MB</td><td>7.0+</td><td>05/09/2026</td><td><a class="mini dl-link" href="downloads/stream-thomkhali-v2.3.0.apk" download data-ver="v2.3.0">⬇ APK</a></td></tr>
+              </tbody>
+            </table>
+            <small class="dl-note">Dica: ative “Instalar apps desconhecidos” no Android para instalar o APK. Grátis, sem root.</small>
+          </div>
+        </section>
+        <section class="grid-3">
+          <!-- PLAYER -->
+          <div class="card player-card span2">
+            <div class="card-head">
+              <h2>Prévia da transmissão</h2>
+              <div class="player-badges"><span class="pill live">● LIVE</span><span class="pill">1080p60</span><span class="pill" id="latencyPill">Latência: 2,1s</span></div>
+            </div>
+            <div class="player" id="player">
+              <canvas id="streamCanvas" width="960" height="540"></canvas>
+              <div class="player-overlay" id="playerOverlay">
+                <button class="play-big" id="playBig" aria-label="Play/Pause">⏸</button>
+              </div>
+              <div class="player-controls">
+                <button class="icon-btn" id="playBtn" title="Play/Pause">⏸</button>
+                <button class="icon-btn" id="muteBtn" title="Mudo">🔊</button>
+                <input type="range" id="volumeRange" min="0" max="100" value="70" aria-label="Volume" />
+                <span class="time"><span id="timeNow">02:14:36</span> / LIVE</span>
+                <span class="spacer"></span>
+                <button class="chip-btn" id="qualityBtn">1080p ▾</button>
+                <button class="chip-btn" id="theaterBtn">⛶ Cinema</button>
+                <button class="chip-btn accent" id="clipBtn">✂ Clipe</button>
+              </div>
+              <div class="offline-cover hidden" id="offlineCover">
+                <strong>Você está offline</strong>
+                <p>Sua última live terminou. Pressione “Iniciar live” para voltar.</p>
+                <button class="btn primary" id="goLiveBtn">● Iniciar live</button>
+              </div>
+            </div>
+            <div class="quick-row">
+              <button class="quick" data-cmd="Anúncio 30s">📢 Anúncio</button>
+              <button class="quick" data-cmd="Enquete criada">📊 Enquete</button>
+              <button class="quick" data-cmd="Sorteio iniciado">🎁 Sorteio</button>
+              <button class="quick" data-cmd="Marcador adicionado">🔖 Marcador</button>
+              <button class="quick" data-cmd="Raid enviada">🚀 Raid</button>
+            </div>
+          </div>
+
+          <!-- CHAT -->
+          <div class="card chat-card">
+            <div class="card-head">
+              <h2>Chat ao vivo</h2>
+              <span class="pill" id="chatCount">3,9 mil</span>
+            </div>
+            <div class="chat-list" id="chatList" aria-live="polite"></div>
+            <div class="chat-input-row">
+              <input id="chatInput" type="text" maxlength="200" placeholder="Enviar mensagem como ThomKhali… (Enter)" />
+              <button class="btn primary" id="chatSend">➤</button>
+            </div>
+            <div class="chat-tools">
+              <button class="mini" id="slowBtn">🐢 Lento</button>
+              <button class="mini" id="emoteBtn">😀 Emotes</button>
+              <button class="mini" id="clearBtn">🧹 Limpar</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid-2">
+          <div class="card">
+            <div class="card-head"><h2>Espectadores na live</h2>
+              <div class="range-btns">
+                <button class="range active" data-range="live">Live</button>
+                <button class="range" data-range="7d">7d</button>
+                <button class="range" data-range="30d">30d</button>
+              </div>
+            </div>
+            <canvas id="viewersChart" height="220"></canvas>
+            <div class="legend"><span><i class="dot a"></i>Espectadores</span><span><i class="dot b"></i>Chat/min</span><span class="total">Média: <b id="avgViewers">3.840</b></span></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2>Feed de eventos</h2><button class="mini" id="pauseEventsBtn">⏸ Pausar</button></div>
+            <ul class="events" id="eventsList"></ul>
+          </div>
+        </section>
+      </div>
+
+      <div id="tab-go" class="tab">
+        <section class="card tw-status-hero">
+          <div class="tw-live-dot" id="twHeroDot"></div>
+          <div>
+            <h2 style="margin:0">Transmitir na Twitch</h2>
+            <p class="tw-sub" id="twHeroSub">Conecte sua conta para configurar título, jogo, chave de stream e monitorar a live.</p>
+          </div>
+          <span class="pill" id="twHeroPill">desconectado</span>
+        </section>
+
+        <section class="grid-2">
+          <div class="card">
+            <div class="card-head"><h2>🟣 Conta Twitch</h2><span class="pill" id="twConnPill">desconectado</span></div>
+            <div id="twDisconnected">
+              <p class="tw-sub">Entre com sua conta da Twitch para o painel ler seu canal e gerenciar a transmissão.</p>
+              <label class="tw-label">Client ID do seu app Twitch
+                <input id="twClientId" placeholder="ex.: abc123xyz…" autocomplete="off" />
+              </label>
+              <div class="form-actions" style="margin-top:10px">
+                <button class="btn primary" id="twConnectBtn">🟣 Conectar com Twitch</button>
+              </div>
+              <small class="dl-note">Não tem um app? Siga o passo a passo em “Como criar o app” abaixo — leva 2 minutos.</small>
+            </div>
+            <div id="twConnected" class="hidden">
+              <div class="tw-profile">
+                <img id="twAvatar" alt="Avatar do canal" />
+                <div>
+                  <strong id="twName">—</strong>
+                  <small id="twLogin" class="tw-sub">—</small>
+                </div>
+              </div>
+              <div class="form-actions" style="margin-top:10px">
+                <button class="btn ghost" id="twRefreshProfileBtn">↻ Atualizar</button>
+                <button class="btn danger" id="twDisconnectBtn">Desconectar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h2>🔴 Status da live</h2><button class="mini" id="twRefreshStatusBtn">↻ Atualizar</button></div>
+            <div id="twLiveStatus"><p class="tw-sub">Conecte a conta para ver se você está ao vivo.</p></div>
+            <label class="tw-check"><input type="checkbox" id="twAutoPoll" /> Monitorar automaticamente (a cada 60s)</label>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>⚙ Configurar transmissão</h2><span class="pill">usa a API da Twitch</span></div>
+          <div class="form-2">
+            <label class="tw-label">Título da live<input id="twTitle" maxlength="140" placeholder="Ex.: RANKED com viewers!" /></label>
+            <label class="tw-label">Categoria / jogo<input id="twGame" placeholder="Ex.: Valorant" /></label>
+          </div>
+          <div class="form-actions" style="margin-top:12px">
+            <button class="btn primary" id="twSaveBtn">Salvar na Twitch</button>
+          </div>
+          <small class="dl-note">O título e a categoria são aplicados ao seu canal na hora (requer login).</small>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>📡 RTMP — ligar o OBS na Twitch</h2><span class="pill">chave secreta</span></div>
+          <div class="form-2">
+            <label class="tw-label">Servidor de ingestão
+              <select id="twIngest">
+                <option value="rtmp://live.twitch.tv/app/">Automático (recomendado)</option>
+                <option value="rtmp://livegru.twitch.tv/app/">América do Sul: São Paulo</option>
+                <option value="rtmp://liveiad.twitch.tv/app/">EUA Leste: Ashburn</option>
+                <option value="rtmp://livearn.twitch.tv/app/">Europa: Estocolmo</option>
+              </select>
+            </label>
+            <label class="tw-label">URL do servidor (leva para o OBS)
+              <span class="key-row"><input id="twRtmpUrl" readonly value="rtmp://live.twitch.tv/app/" /><button class="mini" id="twCopyRtmpBtn">Copiar</button></span>
+            </label>
+          </div>
+          <label class="tw-label" style="margin-top:12px">Chave de transmissão
+            <span class="key-row"><input id="twStreamKey" type="password" readonly placeholder="Clique em “Revelar chave” (requer login)" /><button class="mini" id="twToggleKeyBtn">👁</button><button class="mini" id="twCopyKeyBtn">Copiar</button></span>
+          </label>
+          <div class="form-actions" style="margin-top:12px">
+            <button class="btn primary" id="twRevealKeyBtn">🔑 Revelar chave</button>
+            <button class="btn ghost" id="twResetKeyBtn">↻ Resetar chave</button>
+          </div>
+          <ol class="tw-steps">
+            <li>No <strong>OBS</strong>: Configurações → Transmissão → Serviço <strong>Twitch</strong> → use <strong>Conectar conta</strong> ou cole servidor + chave manualmente.</li>
+            <li>Clique em <strong>Iniciar transmissão</strong> no OBS — o status aqui em cima muda para AO VIVO.</li>
+            <li>Nunca compartilhe sua chave. Se vazar, clique em <strong>Resetar chave</strong>.</li>
+          </ol>
+          <small class="dl-note">Lista oficial de servidores: https://stream.twitch.tv/ingests/</small>
+          <small class="dl-note">⚠️ Para revelar/resetar a chave, sua conta Twitch precisa ter <strong>verificação em 2 etapas (2FA)</strong> ativada — ative em twitch.tv/settings/security.</small>
+        </section>
+
+        <section class="card">
+          <h3>🔑 Como criar o app na Twitch (2 min, uma única vez)</h3>
+          <ol class="tw-steps">
+            <li>Acesse <strong>dev.twitch.tv/console/apps</strong> e clique em <strong>Registrar seu aplicativo</strong>.</li>
+            <li>Nome: <code>Stream ThomKhali</code> · Tipo: <strong>Confidencial: não</strong> (usamos PKCE/implícito, sem segredo no frontend).</li>
+            <li>Em <strong>URLs de redirecionamento OAuth</strong>, cadastre o endereço onde o painel roda (ex.: <code id="twRedirectHint">http://localhost:3000/</code>). Salve.</li>
+            <li>Copie o <strong>ID do cliente</strong>, cole no campo “Client ID” acima e clique em <strong>Conectar com Twitch</strong>.</li>
+          </ol>
+        </section>
+      </div>
+
+      <div id="tab-analytics" class="tab">
+        <section class="grid-3 analytics">
+          <div class="card"><h3>Fontes de tráfego</h3><canvas id="trafficChart" height="200"></canvas></div>
+          <div class="card"><h3>Crescimento de seguidores</h3><canvas id="followsChart" height="200"></canvas></div>
+          <div class="card"><h3>Receita (7 dias)</h3><canvas id="revenueChart" height="200"></canvas>
+            <p class="big-money">R$ 2.314,90 <span class="up">+14%</span></p>
+          </div>
+        </section>
+        <section class="card table-card">
+          <h3>Top clipes performando</h3>
+          <table>
+            <thead><tr><th>Clipe</th><th>Views</th><th>Chat gerado</th><th>Novos follows</th></tr></thead>
+            <tbody id="clipsTable"></tbody>
+          </table>
+        </section>
+      </div>
+
+      <div id="tab-chat" class="tab">
+        <section class="grid-2">
+          <div class="card">
+            <h3>Moderação</h3>
+            <div class="mod-row"><input id="modUser" placeholder="usuário…" /><select id="modAction"><option value="Timeout 10min">Timeout 10min</option><option value="Ban">Ban</option><option value="VIP">Dar VIP</option><option value="Shoutout">Shoutout</option></select><button class="btn primary" id="modApply">Aplicar</button></div>
+            <ul class="events" id="modLog"></ul>
+          </div>
+          <div class="card">
+            <h3>Comandos do bot</h3>
+            <ul class="cmd-list">
+              <li><code>!sorteio</code><span>entra no sorteio atual</span></li>
+              <li><code>!clip</code><span>cria um clipe dos últimos 30s</span></li>
+              <li><code>!ponto</code><span>mostra pontos do canal</span></li>
+              <li><code>!discord</code><span>link do Discord</span></li>
+              <li><code>!spec</code><span>config do PC</span></li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div id="tab-content" class="tab">
+        <section class="grid-3" id="clipsGrid"></section>
+      </div>
+
+      <div id="tab-settings" class="tab">
+        <section class="card form-card">
+          <h3>Informações da transmissão</h3>
+          <label>Título<input id="fTitle" value="🔴 Jogando RANKED com viewers + sorteio de gift subs!" maxlength="120" /></label>
+          <div class="form-2">
+            <label>Categoria<select id="fCategory"><option>Valorant</option><option>League of Legends</option><option>Just Chatting</option><option>Counter-Strike 2</option><option>Minecraft</option></select></label>
+            <label>Idioma<select><option>Português</option><option>Inglês</option><option>Espanhol</option></select></label>
+          </div>
+          <label>Tags<input id="fTags" value="Ranked, Português, ComViewers, Sorteio" /></label>
+          <div class="form-actions"><button class="btn primary" id="saveInfoBtn">Salvar informações</button><button class="btn ghost" id="resetInfoBtn">Descartar</button></div>
+        </section>
+      </div>
+
+      <footer class="footer">Stream ThomKhali · dados simulados localmente · feito para streamers 💜</footer>
+    </main>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-backdrop hidden" id="modalBackdrop">
+  <div class="modal">
+    <h3>Editar transmissão</h3>
+    <label>Título<input id="mTitle" maxlength="120" /></label>
+    <label>Categoria<select id="mCategory"><option>Valorant</option><option>League of Legends</option><option>Just Chatting</option><option>Counter-Strike 2</option><option>Minecraft</option></select></label>
+    <div class="modal-actions"><button class="btn ghost" id="modalCancel">Cancelar</button><button class="btn primary" id="modalSave">Salvar</button></div>
+  </div>
+</div>
+
+<!-- QUICK ACTION SHEET -->
+<div class="modal-backdrop hidden" id="quickBackdrop">
+  <div class="modal">
+    <h3>Ação rápida</h3>
+    <div class="quick-grid">
+      <button class="quick" data-cmd="Shoutout enviado">📣 Shoutout</button>
+      <button class="quick" data-cmd="Hype train iniciado">🔥 Hype train</button>
+      <button class="quick" data-cmd="Previsão criada">🔮 Previsão</button>
+      <button class="quick" data-cmd="Modo lento ativado">🐢 Modo lento</button>
+    </div>
+    <div class="modal-actions"><button class="btn ghost" id="quickClose">Fechar</button></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

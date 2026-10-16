@@ -1,0 +1,29 @@
+{
+  "name": "Stream ThomKhali",
+  "short_name": "ThomKhali",
+  "description": "Dashboard e app da Stream ThomKhali: lives, chat, eventos, metas e downloads para Android.",
+  "id": "./index.html",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0e0e13",
+  "theme_color": "#9146ff",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "categories": ["entertainment", "social"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
